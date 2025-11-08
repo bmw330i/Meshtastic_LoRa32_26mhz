@@ -183,5 +183,22 @@ TTGO V1 ─── LilyGo Router (mobile) ─── TTGO V2
 - **Route: Active** - Router is forwarding messages
 - **GPS: Fixed** - Location lock acquired
 
-Your LilyGo router + TTGO clients create a robust, portable mesh network! 🚀📡</content>
+Your LilyGo router + TTGO clients create a robust, portable mesh network! 🚀📡
+
+## ⚠️ Safety Notice: LiPo Battery Connector
+
+**IMPORTANT:** The LilyGo T22 v1.1 board has a LiPo battery connector that may pose a fire hazard. If you're concerned about safety:
+
+### Quick Safety Configuration
+1. **Via Bluetooth App**: Set "Shutdown after X seconds on battery" to 5 seconds
+2. **Via Config**: Add `"USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "5"` to userPrefs.jsonc
+3. **Hardware Option**: Physically remove or disable the battery connector
+
+### Why This Matters
+- LiPo batteries can overheat if not properly managed
+- The connector enables direct battery charging/usage
+- Setting auto-shutdown prevents battery operation entirely
+- Device will only run on external USB power
+
+**Safety First!** Configure this before using with battery power.</content>
 <parameter name="filePath">/Users/david/Documents/Meshtastic_LoRa32_26mhz/LILYGO_ROUTER_GUIDE.md

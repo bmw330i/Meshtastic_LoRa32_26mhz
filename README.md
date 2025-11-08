@@ -493,6 +493,68 @@ The small OLED screen on your TTGO boards shows various status messages and netw
 - Adjust **Position Update Interval** to reduce GPS messages
 - Disable **Telemetry** if not needed
 
+## Safety Configuration: Disabling LiPo Battery Usage
+
+**⚠️ IMPORTANT SAFETY NOTICE:** If your board has a LiPo battery connector that poses a fire hazard, you can disable battery functionality entirely through firmware configuration.
+
+### Option 1: Automatic Shutdown on Battery Power (Recommended)
+
+Configure the device to **immediately shut down** when running on battery power only:
+
+#### **Via Meshtastic App:**
+1. Connect to your device via Bluetooth
+2. Go to **Settings** → **Power Config**
+3. Set **"Shutdown after X seconds on battery"** to **1-5 seconds**
+4. This prevents any battery usage that could cause safety issues
+
+#### **Via Configuration:**
+In your `userPrefs.jsonc`, add:
+```jsonc
+{
+  "USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "5"
+}
+```
+
+### Option 2: Build-Time Battery Disable
+
+For maximum safety, exclude battery functionality at compile time:
+
+#### **Add to build_flags in userPrefs.jsonc:**
+```jsonc
+"build_flags": "-D HELTEC_V1 -D MESHTASTIC_EXCLUDE_ENVIRONMENTAL_SENSOR=1 -D MESHTASTIC_EXCLUDE_AUDIO=1 -D MESHTASTIC_EXCLUDE_POWERMON=1 -D MESHTASTIC_EXCLUDE_STOREFORWARD=1 -D MESHTASTIC_EXCLUDE_CANNEDMESSAGES=1 -D MESHTASTIC_EXCLUDE_RANGETEST=1 -D DISABLE_BATTERY_SENSE=1",
+```
+
+### Option 3: Hardware Removal (Most Safe)
+
+For ultimate safety:
+- **Physically remove** the LiPo battery connector from the PCB
+- Or **cut the traces** leading to the battery connector
+- Use electrical tape to insulate any exposed contacts
+
+### Safety Recommendations
+
+#### **Immediate Actions:**
+1. **Stop using LiPo batteries** with this board until safety is addressed
+2. **Configure auto-shutdown** as described above
+3. **Monitor device temperature** during operation
+4. **Keep devices away from flammable materials**
+
+#### **Long-term Solutions:**
+- Replace with safer battery types (LiFePO4)
+- Use external regulated power supplies
+- Implement proper battery management circuits
+- Consider professional safety review for high-risk applications
+
+### Testing Battery Disable
+
+After configuration, test that:
+- Device runs normally on USB power
+- Device shuts down within 5 seconds when USB is disconnected
+- No battery charging occurs
+- OLED display shows appropriate power status
+
+**Your safety is paramount!** Always prioritize safety over functionality when dealing with potential fire hazards.
+
 ## Troubleshooting
 
 ### Board Not Responding
@@ -562,3 +624,47 @@ This project is based on Meshtastic firmware, which is licensed under the GPL-3.
 ---
 
 *This project was prepared with the assistance of GitHub Copilot.*
+
+## Community & Support
+
+### Getting Help
+- **Meshtastic Discord**: Join the official community at [discord.gg/ktMAKGB2Bs](https://discord.gg/ktMAKGB2Bs)
+- **GitHub Issues**: Report bugs or request features in this repository
+- **Meshtastic Forums**: Community discussions at [meshtastic.discourse.group](https://meshtastic.discourse.group)
+
+### Contributing
+- **Hardware Testing**: Test on additional 26MHz crystal boards
+- **Documentation**: Improve setup guides and troubleshooting
+- **Bug Reports**: Help identify and fix issues
+- **Feature Requests**: Suggest improvements for unsupported hardware
+
+### Related Communities
+- **Meshtastic Subreddit**: r/meshtastic
+- **LoRa Communities**: r/LoRa, r/RTLSDR
+- **ESP32 Communities**: ESP32 forums and Discord servers
+- **Ham Radio**: Digital modes communities
+
+## Sharing This Project
+
+### Quick Share Links
+- **GitHub Repository**: https://github.com/bmw330i/Meshtastic_LoRa32_26mhz
+- **Direct Download**: Latest release assets
+- **Documentation**: This README and guides
+
+### Community Outreach
+If you found this helpful for your Heltec/TTGO boards, please share with others who might benefit!
+
+**Share on:**
+- Meshtastic Discord #hardware channel
+- Reddit (r/meshtastic, r/LoRa, r/esp32)
+- Meshtastic forums
+- GitHub discussions on the main Meshtastic repo
+
+**Helpful message:**
+*"If you have Heltec WiFi LoRa 32 boards with 26MHz crystals that aren't supported by standard Meshtastic firmware, check out this community solution: https://github.com/bmw330i/Meshtastic_LoRa32_26mhz"*
+
+See `COMMUNITY_OUTREACH.md` for detailed sharing strategies and target communities.
+
+---
+
+**Found this useful? ⭐ Star this repo and share with fellow Meshtastic enthusiasts!**
