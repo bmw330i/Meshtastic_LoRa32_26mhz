@@ -1,0 +1,33 @@
+# PlatformIO build artifacts and dependencies
+.pio/
+.vscode/
+.envrc
+.cache/
+.DS_Store
+
+# Build outputs
+*.bin
+*.elf
+*.map
+
+# Environment variables
+.env
+
+# IDE files
+*.code-workspace
+.vscode/settings.json
+
+# Temporary files
+*~
+*.tmp
+*.bak
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# OS specific
+Thumbs.db

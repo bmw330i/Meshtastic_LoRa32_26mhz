@@ -1,0 +1,7 @@
+This project is a customized version of the Meshtastic firmware, specifically adapted for the Heltec WiFi LoRa 32 (V2) board that uses a 26MHz crystal. The goal is to provide a working, modern firmware for this older hardware revision, allowing it to be used for the Meshtastic mesh networking project and saving it from becoming e-waste.
+
+The repository contains:
+- The full source code for the firmware.
+- The PlatformIO project configuration (`platformio.ini`).
+- A pre-compiled `firmware.factory.bin` for easy flashing.
+- A `README.md` with instructions for flashing and building.
