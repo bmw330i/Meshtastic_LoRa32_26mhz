@@ -31,3 +31,7 @@ __pycache__/
 
 # OS specific
 Thumbs.db
+
+# Firmware flashing logs
+flash_*.log
+esptool_*.log
