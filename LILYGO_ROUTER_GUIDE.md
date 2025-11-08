@@ -1,5 +1,32 @@
 # LilyGo T22 v1.1 Router + TTGO Client Setup Guide
 
+## ⚠️ CRITICAL SAFETY WARNING: LiPo Battery Fire Hazard
+
+**🚨 DANGER: DO NOT USE LiPo BATTERIES WITH THIS FIRMWARE! 🚨**
+
+This firmware is designed **exclusively for USB-powered operation only**. The LilyGo T22 v1.1 board has a LiPo battery connector that poses a **severe fire hazard** if used.
+
+### Why LiPo Batteries Are Dangerous
+- **Thermal Runaway**: LiPo batteries can overheat, catch fire, or explode
+- **No Safety Circuit**: This firmware does not include battery management or protection
+- **Overvoltage Risk**: Uncontrolled charging can damage batteries and cause fires
+- **Fire Hazard**: Lithium polymer batteries have caused numerous fires in electronics
+
+### Supported Power Sources
+- ✅ **USB Power Only** (5V regulated power from USB port)
+- ❌ **LiPo Batteries** (NEVER use - fire hazard)
+
+### If You Have a Battery Connector
+**IMMEDIATELY DISABLE OR REMOVE IT:**
+- Configure auto-shutdown on battery detection (see below)
+- Physically remove the battery connector from the PCB
+- Cut traces to the battery connector if necessary
+- Use electrical tape to insulate any exposed contacts
+
+**This firmware is for USB-powered devices ONLY. Battery usage will void any safety considerations and is done at your own risk.**
+
+---
+
 ## Your Hardware Setup
 
 **Router (LilyGo T22 v1.1):**
@@ -187,18 +214,29 @@ Your LilyGo router + TTGO clients create a robust, portable mesh network! 🚀�
 
 ## ⚠️ Safety Notice: LiPo Battery Connector
 
-**IMPORTANT:** The LilyGo T22 v1.1 board has a LiPo battery connector that may pose a fire hazard. If you're concerned about safety:
+**IMPORTANT:** The LilyGo T22 v1.1 board has a LiPo battery connector that poses a **SEVERE FIRE HAZARD**.
 
-### Quick Safety Configuration
-1. **Via Bluetooth App**: Set "Shutdown after X seconds on battery" to 5 seconds
-2. **Via Config**: Add `"USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "5"` to userPrefs.jsonc
+### 🚨 CRITICAL SAFETY REQUIREMENTS
+1. **NEVER connect LiPo batteries** to this board
+2. **Configure auto-shutdown** on battery detection immediately
+3. **Use USB power ONLY** (5V regulated from USB port)
+4. **Physically disable** the battery connector if possible
+
+### Firmware Safety Features Applied
+- **Auto-Shutdown**: Device shuts down 1 second after detecting battery power
+- **Charging Disabled**: Hardware charging circuits set to 0mA (disabled)
+- **USB-Only Operation**: Designed exclusively for regulated USB power
+
+### Quick Safety Configuration (REQUIRED)
+1. **Via Bluetooth App**: Set "Shutdown after X seconds on battery" to 1 second
+2. **Via Config**: Add `"USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "1"` to userPrefs.jsonc
 3. **Hardware Option**: Physically remove or disable the battery connector
 
 ### Why This Matters
-- LiPo batteries can overheat if not properly managed
-- The connector enables direct battery charging/usage
-- Setting auto-shutdown prevents battery operation entirely
-- Device will only run on external USB power
+- **LiPo batteries can explode** if overcharged or damaged
+- **No BMS (Battery Management System)** in this firmware
+- **Thermal runaway** can occur without proper management
+- **Fire risk** is real and documented in electronics failures
 
-**Safety First!** Configure this before using with battery power.</content>
+**Safety First!** Configure this before using - this firmware is USB-powered only.</content>
 <parameter name="filePath">/Users/david/Documents/Meshtastic_LoRa32_26mhz/LILYGO_ROUTER_GUIDE.md

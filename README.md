@@ -1,5 +1,34 @@
 # Meshtastic Firmware for Heltec WiFi LoRa 32 Boards (V1 & V2) with 26MHz Crystal
 
+## ⚠️ CRITICAL SAFETY WARNING: LiPo Battery Fire Hazard
+
+**🚨 DANGER: DO NOT USE LiPo BATTERIES WITH THIS FIRMWARE! 🚨**
+
+This firmware is designed **exclusively for USB-powered operation only**. Using LiPo batteries poses a **severe fire hazard** and is **strictly prohibited**.
+
+### Why LiPo Batteries Are Dangerous
+- **Thermal Runaway**: LiPo batteries can overheat, catch fire, or explode
+- **No Safety Circuit**: This firmware does not include battery management or protection
+- **Overvoltage Risk**: Uncontrolled charging can damage batteries and cause fires
+- **Fire Hazard**: Lithium polymer batteries have caused numerous fires in electronics
+
+### Supported Power Sources
+- ✅ **USB Power Only** (5V regulated power from USB port)
+- ✅ **External Regulated 5V Power Supplies**
+- ❌ **LiPo Batteries** (NEVER use - fire hazard)
+- ❌ **Unregulated Power Sources**
+
+### If You Have a Battery Connector
+**IMMEDIATELY DISABLE OR REMOVE IT:**
+- Configure auto-shutdown on battery detection (see Safety Configuration below)
+- Physically remove the battery connector from the PCB
+- Cut traces to the battery connector if necessary
+- Use electrical tape to insulate any exposed contacts
+
+**This firmware is for USB-powered devices ONLY. Battery usage will void any safety considerations and is done at your own risk.**
+
+---
+
 This repository contains customized builds of the Meshtastic firmware specifically adapted for Heltec WiFi LoRa 32 boards that use 26MHz crystals. These boards may not be fully supported by standard Meshtastic firmware builds, and this project provides working firmware for both V1 (4MB) and V2/V2.1 (8MB) variants.
 
 ## About Meshtastic
@@ -497,63 +526,91 @@ The small OLED screen on your TTGO boards shows various status messages and netw
 
 **⚠️ IMPORTANT SAFETY NOTICE:** If your board has a LiPo battery connector that poses a fire hazard, you can disable battery functionality entirely through firmware configuration.
 
-### Option 1: Automatic Shutdown on Battery Power (Recommended)
+### 🚨 CRITICAL: This Firmware is USB-Only
 
-Configure the device to **immediately shut down** when running on battery power only:
+**DO NOT use LiPo batteries with this firmware under any circumstances:**
+- LiPo batteries are a **FIRE HAZARD** when used improperly
+- This firmware has **NO battery management or safety circuits**
+- Battery charging/usage can cause **thermal runaway and fires**
+- Only use **regulated USB power (5V)**
+
+### Firmware Safety Features
+- **Auto-Shutdown on Battery Detection**: Devices automatically shut down 1 second after detecting any battery connection
+- **Charging Disabled**: Battery charging circuits are completely disabled in firmware to prevent overvoltage
+- **USB-Only Operation**: This firmware is designed exclusively for USB-powered operation
+
+### Configuration Applied
+The firmware includes these safety settings by default:
+```jsonc
+"USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "1"
+```
+This causes immediate shutdown (1 second) when any battery power is detected.
+
+### Additional Safety Measures
+For maximum safety, the firmware also disables battery charging at the hardware level:
+- **Charging Current**: Set to 0mA (disabled)
+- **No Battery Charging**: Hardware charging circuits are inactive
+- **Overvoltage Protection**: No charging means no overvoltage risk
+
+### Option 1: Automatic Shutdown on Battery Detection (REQUIRED)
+
+Configure the device to **immediately shut down** when ANY battery power is detected:
 
 #### **Via Meshtastic App:**
 1. Connect to your device via Bluetooth
 2. Go to **Settings** → **Power Config**
-3. Set **"Shutdown after X seconds on battery"** to **1-5 seconds**
-4. This prevents any battery usage that could cause safety issues
+3. Set **"Shutdown after X seconds on battery"** to **1 second**
+4. This prevents any battery usage that could cause fires
 
 #### **Via Configuration:**
 In your `userPrefs.jsonc`, add:
 ```jsonc
 {
-  "USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "5"
+  "USERPREFS_CONFIG_POWER_ON_BATTERY_SHUTDOWN_AFTER_SECS": "1"
 }
 ```
 
-### Option 2: Build-Time Battery Disable
+### Option 2: Build-Time Battery Disable (Maximum Safety)
 
-For maximum safety, exclude battery functionality at compile time:
+For maximum safety, exclude ALL battery functionality at compile time:
 
 #### **Add to build_flags in userPrefs.jsonc:**
 ```jsonc
-"build_flags": "-D HELTEC_V1 -D MESHTASTIC_EXCLUDE_ENVIRONMENTAL_SENSOR=1 -D MESHTASTIC_EXCLUDE_AUDIO=1 -D MESHTASTIC_EXCLUDE_POWERMON=1 -D MESHTASTIC_EXCLUDE_STOREFORWARD=1 -D MESHTASTIC_EXCLUDE_CANNEDMESSAGES=1 -D MESHTASTIC_EXCLUDE_RANGETEST=1 -D DISABLE_BATTERY_SENSE=1",
+"build_flags": "-D HELTEC_V1 -D MESHTASTIC_EXCLUDE_ENVIRONMENTAL_SENSOR=1 -D MESHTASTIC_EXCLUDE_AUDIO=1 -D MESHTASTIC_EXCLUDE_POWERMON=1 -D MESHTASTIC_EXCLUDE_STOREFORWARD=1 -D MESHTASTIC_EXCLUDE_CANNEDMESSAGES=1 -D MESHTASTIC_EXCLUDE_RANGETEST=1 -D DISABLE_BATTERY_SENSE=1 -D DISABLE_BATTERY_CHARGING=1",
 ```
 
-### Option 3: Hardware Removal (Most Safe)
+### Option 3: Hardware Removal (Most Safe - RECOMMENDED)
 
-For ultimate safety:
+For ultimate safety with LiPo-equipped boards:
 - **Physically remove** the LiPo battery connector from the PCB
-- Or **cut the traces** leading to the battery connector
+- **Cut the traces** leading to the battery connector
 - Use electrical tape to insulate any exposed contacts
+- **DO NOT** connect any batteries to this board
 
 ### Safety Recommendations
 
-#### **Immediate Actions:**
-1. **Stop using LiPo batteries** with this board until safety is addressed
+#### **Immediate Actions (REQUIRED):**
+1. **NEVER connect LiPo batteries** to boards running this firmware
 2. **Configure auto-shutdown** as described above
-3. **Monitor device temperature** during operation
-4. **Keep devices away from flammable materials**
+3. **Use only regulated USB power** (5V from USB port)
+4. **Monitor device temperature** during operation
+5. **Keep devices away from flammable materials**
 
-#### **Long-term Solutions:**
-- Replace with safer battery types (LiFePO4)
-- Use external regulated power supplies
-- Implement proper battery management circuits
-- Consider professional safety review for high-risk applications
+#### **Why This Matters:**
+- **LiPo batteries can explode** if overcharged or damaged
+- **No BMS (Battery Management System)** in this firmware
+- **Thermal runaway** can occur without proper management
+- **Fire risk** is real and documented in electronics failures
 
 ### Testing Battery Disable
 
 After configuration, test that:
-- Device runs normally on USB power
-- Device shuts down within 5 seconds when USB is disconnected
-- No battery charging occurs
-- OLED display shows appropriate power status
+- Device runs normally on USB power only
+- Device shuts down within 1 second if battery power is detected
+- No battery charging occurs under any circumstances
+- OLED display shows "USB Power" status only
 
-**Your safety is paramount!** Always prioritize safety over functionality when dealing with potential fire hazards.
+**🚨 SAFETY FIRST: This firmware is designed for USB-powered operation only. Battery usage creates unacceptable fire hazards and is strictly prohibited.**
 
 ## Troubleshooting
 

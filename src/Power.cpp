@@ -1064,11 +1064,10 @@ bool Power::axpChipInit()
         // disable all axp chip interrupt
         PMU->disableIRQ(XPOWERS_AXP192_ALL_IRQ);
 
-        // Set constant current charging current
-        PMU->setChargerConstantCurr(XPOWERS_AXP192_CHG_CUR_450MA);
-
-        // Set up the charging voltage
-        PMU->setChargeTargetVoltage(XPOWERS_AXP192_CHG_VOL_4V2);
+        // CRITICAL SAFETY: Disable battery charging to prevent LiPo battery fire hazards
+        // This firmware is USB-only and must never charge batteries
+        PMU->setChargerConstantCurr(0); // Set charging current to 0 to disable charging
+        // PMU->setChargeTargetVoltage(XPOWERS_AXP192_CHG_VOL_4V2); // Keep voltage setting but disable current
     } else if (PMU->getChipModel() == XPOWERS_AXP2101) {
 
         /*The alternative version of T-Beam 1.1 differs from T-Beam V1.1 in that it uses an AXP2101 power chip*/
@@ -1157,11 +1156,10 @@ bool Power::axpChipInit()
         // disable all axp chip interrupt
         PMU->disableIRQ(XPOWERS_AXP2101_ALL_IRQ);
 
-        // Set the constant current charging current of AXP2101, temporarily use 500mA by default
-        PMU->setChargerConstantCurr(XPOWERS_AXP2101_CHG_CUR_500MA);
-
-        // Set up the charging voltage
-        PMU->setChargeTargetVoltage(XPOWERS_AXP2101_CHG_VOL_4V2);
+        // CRITICAL SAFETY: Disable battery charging to prevent LiPo battery fire hazards
+        // This firmware is USB-only and must never charge batteries
+        PMU->setChargerConstantCurr(0); // Set charging current to 0 to disable charging
+        // PMU->setChargeTargetVoltage(XPOWERS_AXP2101_CHG_VOL_4V2); // Keep voltage setting but disable current
     }
 
     PMU->clearIrqStatus();
