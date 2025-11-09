@@ -1,5 +1,26 @@
 # LilyGo T22 v1.1 Router + TTGO Client Setup Guide
 
+## 🚨 USE AT YOUR OWN RISK - SAFETY WARNING 🚨
+
+**This software is provided "AS IS" without warranty of any kind. Use entirely at your own risk.**
+
+### ⚠️ REPORTED BATTERY SAFETY ISSUES
+Community members have reported that **battery connectors on some boards can cause batteries to overheat**, potentially leading to thermal runaway, fires, or explosions. While this patched version has implemented safety measures to disable battery charging and enable auto-shutdown on battery detection, **these issues may still occur due to hardware limitations**.
+
+### 🔧 REMEDIATION STEPS TAKEN
+This firmware includes the following safety measures:
+- **Battery charging disabled** at hardware level (0mA charging current)
+- **Auto-shutdown** within 1 second of battery detection
+- **USB-only operation** enforced through firmware configuration
+- **Explicit warnings** against battery usage
+
+### ⚠️ OUT OF AN ABUNDANCE OF CAUTION
+Despite these safety measures, we **strongly advise against using any batteries** with this firmware. The underlying hardware limitations and reported overheating issues mean that **battery usage remains a significant risk**. Only proceed with battery usage if you fully understand and accept these risks.
+
+**For maximum safety: Use USB power only and physically disable/remove battery connectors.**
+
+---
+
 ## ⚠️ CRITICAL SAFETY WARNING: LiPo Battery Fire Hazard
 
 **🚨 DANGER: DO NOT USE LiPo BATTERIES WITH THIS FIRMWARE! 🚨**
@@ -11,6 +32,7 @@ This firmware is designed **exclusively for USB-powered operation only**. The Li
 - **No Safety Circuit**: This firmware does not include battery management or protection
 - **Overvoltage Risk**: Uncontrolled charging can damage batteries and cause fires
 - **Fire Hazard**: Lithium polymer batteries have caused numerous fires in electronics
+- **Connector Overheating**: Community reports indicate battery connectors can cause excessive heating, potentially leading to thermal runaway even with safety measures in place
 
 ### Supported Power Sources
 - ✅ **USB Power Only** (5V regulated power from USB port)
@@ -23,7 +45,7 @@ This firmware is designed **exclusively for USB-powered operation only**. The Li
 - Cut traces to the battery connector if necessary
 - Use electrical tape to insulate any exposed contacts
 
-**This firmware is for USB-powered devices ONLY. Battery usage will void any safety considerations and is done at your own risk.**
+**This firmware is for USB-powered devices ONLY. Battery usage will void any safety considerations and is done at your own risk. Despite remediation steps, reported connector overheating issues may still pose fire hazards.**
 
 ---
 
@@ -237,6 +259,7 @@ Your LilyGo router + TTGO clients create a robust, portable mesh network! 🚀�
 - **No BMS (Battery Management System)** in this firmware
 - **Thermal runaway** can occur without proper management
 - **Fire risk** is real and documented in electronics failures
+- **Connector overheating** has been reported by community members despite safety measures
 
-**Safety First!** Configure this before using - this firmware is USB-powered only.</content>
+**Safety First!** Despite remediation steps, reported battery connector overheating issues mean you must configure auto-shutdown and use USB power only - this firmware remains high-risk for battery usage.</content>
 <parameter name="filePath">/Users/david/Documents/Meshtastic_LoRa32_26mhz/LILYGO_ROUTER_GUIDE.md

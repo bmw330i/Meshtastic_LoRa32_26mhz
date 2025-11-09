@@ -1,18 +1,47 @@
-This project provides customized Meshtastic firmware builds specifically adapted for Heltec WiFi LoRa 32 boards with 26MHz crystals. It supports both V1 (4MB flash) and V2/V2.1 (8MB flash) variants, ensuring these older boards remain functional for mesh networking rather than becoming e-waste.
+You are an AI assistant operating in a VS Code workspace containing the Meshtastic firmware sources. Your user wants to flash a TTGO LoRa32 V1 (26MHz crystal) board that previously failed to flash at high baud rates.
 
-The repository contains:
-- Complete source code for Meshtastic firmware
-- PlatformIO project configuration optimized for 26MHz crystal boards
-- Board-specific configurations for heltec-v1, heltec-v2, and heltec-v2_1 environments
-- Custom partition tables for different flash sizes
-- Automated flashing script with board detection
-- Secure credential configuration via .env file
-- Comprehensive documentation in README.md and ARCHITECTURE.md
+Objectives:
+1. Build and flash Meshtastic for TTGO LoRa32 V1.
+2. Avoid the prior flashing error: "Unable to verify flash chip connection (Invalid head of packet (0x00): Possible serial noise or corruption.)".
+3. Provide serial monitor access after success.
 
-Key features:
-- Automatic board detection and appropriate firmware selection
-- Size-optimized builds for V1 boards (4MB flash constraints)
-- Secure default credential replacement
-- Easy flashing with menu-driven script
-- Full Meshtastic mesh networking capabilities
-- GPS, WiFi, MQTT, and BLE support
+Key Facts:
+- Correct PlatformIO environment: ttgo-lora32-oled
+- Variant config to override: platformio_override.ini (in project root)
+- Required setting change: upload_speed must be lowered to 115200 (default 921600 is unstable on some 26MHz units).
+- Monitor baud: 115200
+- Typical serial device path (macOS): /dev/cu.usbserial-XXXXXXXX (CH340/CP210x) or /dev/cu.SLAB_USBtoUART
+
+Procedure for you (the AI agent):
+A. Detect Port:
+   1. Ask user to unplug the board.
+   2. List serial ports: ls /dev/cu.*
+   3. Have user plug the board back in.
+   4. List again; the new entry is the board port.
+B. Ensure Bootloader Mode if needed:
+   - Hold BOOT, press RESET, release RESET, release BOOT.
+C. Confirm/Set upload_speed override:
+   - Ensure <project_root>/platformio_override.ini has:
+     [env:ttgo-lora32-oled]
+     upload_speed = 115200
+D. Flash:
+   - Command: pio run -d <project_root> -e ttgo-lora32-oled --target upload --upload-port <PORT>
+E. Success Criteria:
+   - esptool connects, identifies ESP32, writes ~2.18MB, completes SUCCESS.
+F. Monitor (optional):
+   - pio device monitor --port <PORT> --baud 115200
+
+If Failure:
+- Error 0x00 head: verify override is present; try new cable/USB port; re-enter bootloader.
+- Stuck at Connecting: re-enter bootloader.
+- Port busy: close other serial monitors.
+
+Deliverables:
+- Report each step succinctly.
+- Do not stop until either SUCCESS or a clear hardware blocker is identified.
+
+Constraints:
+- Modify only override and use env ttgo-lora32-oled. Do not change other environments.
+- Keep changes minimal and reproducible.
+
+Now perform the procedure.
